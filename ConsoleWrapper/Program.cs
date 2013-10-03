@@ -173,17 +173,20 @@ namespace ConsoleWrapper {
         return true;
       }
 
-      if( !string.IsNullOrEmpty( CommandLineOptions.Subject ) && extraParameters.Any() ) {
-        Console.Error.Write( "Unexpected parameters on command line:" );
-        foreach( string extraParameter in extraParameters ) {
-          Console.WriteLine( "- {0}", extraParameter );
+      if( extraParameters.Any() ) {
+        if( string.IsNullOrEmpty( CommandLineOptions.Subject ) ) {
+          Console.Error.Write( "Unexpected parameters on command line:" );
+          foreach( string extraParameter in extraParameters ) {
+            Console.WriteLine( "- {0}", extraParameter );
+          }
+          return true;
+        } else {
+          // Construct subject from extra parameters given.
+          // This allows the user to just put the subject as the last parameter(s) on the command line.
+          CommandLineOptions.Subject = String.Join( " ", extraParameters.ToArray() );
         }
-        return true;
-      } else {
-        // Construct subject from extra parameters given.
-        // This allows the user to just put the subject as the last parameter(s) on the command line.
-        CommandLineOptions.Subject = String.Join( " ", extraParameters.ToArray() );
       }
+
 
       if( CommandLineOptions.ShowHelp ) {
         Console.WriteLine( "Usage: {0} [OPTIONS]", new FileInfo( Assembly.GetExecutingAssembly().Location ).Name );
