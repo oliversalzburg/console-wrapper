@@ -174,7 +174,7 @@ namespace ConsoleWrapper {
       }
 
       if( extraParameters.Any() ) {
-        if( string.IsNullOrEmpty( CommandLineOptions.Subject ) ) {
+        if( !string.IsNullOrEmpty( CommandLineOptions.Subject ) ) {
           Console.Error.Write( "Unexpected parameters on command line:" );
           foreach( string extraParameter in extraParameters ) {
             Console.WriteLine( "- {0}", extraParameter );
