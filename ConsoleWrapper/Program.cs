@@ -10,7 +10,7 @@ namespace ConsoleWrapper {
   /// <summary>
   ///   The container class for the entry point of the application.
   /// </summary>
-  internal class Program {
+  internal static class Program {
     /// <summary>
     ///   Command line options for the application
     /// </summary>
@@ -36,6 +36,9 @@ namespace ConsoleWrapper {
       internal static bool ShowHelp { get; set; }
     }
 
+    /// <summary>
+    ///   The resulting process of the application we're wrapping.
+    /// </summary>
     private static Process SubjectProcess { get; set; }
 
     /// <summary>
@@ -51,11 +54,19 @@ namespace ConsoleWrapper {
         return;
       }
 
+      // Set sensible defaults.
       if( CommandLineOptions.Width <= 0 ) {
         CommandLineOptions.Width = 80;
       }
       if( CommandLineOptions.Height <= 0 ) {
         CommandLineOptions.Height = 25;
+      }
+      // Make sure we don't exceed the maximum window size for a console window.
+      if( CommandLineOptions.Width > Console.LargestWindowWidth ) {
+        CommandLineOptions.Width = Console.LargestWindowWidth;
+      }
+      if( CommandLineOptions.Height > Console.LargestWindowHeight ) {
+        CommandLineOptions.Height = Console.LargestWindowHeight;
       }
 
       // Main operations
