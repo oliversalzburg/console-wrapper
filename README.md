@@ -3,6 +3,9 @@ console-wrapper
 
 A small tool to open another console application in a window of a given size.
 
+### Building
+The tool can be built on any Windows machine with a .Net 3.0 framework installed, by using the `build.cmd` script in the project directory.
+
 ### Usage
 
     Usage: console-wrapper.exe [OPTIONS]
