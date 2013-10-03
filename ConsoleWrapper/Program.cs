@@ -62,21 +62,27 @@ namespace ConsoleWrapper {
       Console.WindowWidth = CommandLineOptions.Width;
       Console.WindowHeight = CommandLineOptions.Height;
 
-      string subjectBinary = BinaryFromSubject( CommandLineOptions.Subject );
-      string subjectArguments = CommandLineOptions.Subject.Substring( subjectBinary.Length + 1 );
+      try {
+        string subjectBinary = BinaryFromSubject( CommandLineOptions.Subject );
+        string subjectArguments = CommandLineOptions.Subject.Substring( subjectBinary.Length + 1 );
 
-      ProcessStartInfo subjectStartInfo = new ProcessStartInfo();
-      subjectStartInfo.FileName = subjectBinary;
-      subjectStartInfo.Arguments = subjectArguments;
-      subjectStartInfo.RedirectStandardError = true;
-      subjectStartInfo.RedirectStandardOutput = true;
-      subjectStartInfo.UseShellExecute = false;
+        ProcessStartInfo subjectStartInfo = new ProcessStartInfo();
+        subjectStartInfo.FileName = subjectBinary;
+        subjectStartInfo.Arguments = subjectArguments;
+        subjectStartInfo.RedirectStandardError = true;
+        subjectStartInfo.RedirectStandardOutput = true;
+        subjectStartInfo.UseShellExecute = false;
 
-      SubjectProcess = new Process();
-      SubjectProcess.StartInfo = subjectStartInfo;
-      SubjectProcess.EnableRaisingEvents = true;
-      SubjectProcess.ErrorDataReceived += ( sender, eventArgs ) => Console.Error.WriteLine( eventArgs.Data );
-      SubjectProcess.OutputDataReceived += ( sender, eventArgs ) => Console.WriteLine( eventArgs.Data );
+        SubjectProcess = new Process();
+        SubjectProcess.StartInfo = subjectStartInfo;
+        SubjectProcess.EnableRaisingEvents = true;
+        SubjectProcess.ErrorDataReceived += ( sender, eventArgs ) => Console.Error.WriteLine( eventArgs.Data );
+        SubjectProcess.OutputDataReceived += ( sender, eventArgs ) => Console.WriteLine( eventArgs.Data );
+
+      } catch( Exception ex ) {
+        Console.Error.Write( "Unable to construct child process!", ex );
+        return;
+      }
 
       Console.CancelKeyPress += ( sender, eventArgs ) => {
         // Cancel the Ctrl+C action for our application.
